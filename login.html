@@ -65,10 +65,10 @@
 
     <div class="divider">OR</div>
 
-    <!-- গুগল সাইন-ইন বাটন -->
+    <!-- গুগল সাইন-ইন বাটন (নতুন Client ID সহ) -->
     <div class="google-btn-wrapper">
       <div id="g_id_onload"
-           data-client_id="30571388466-svklahm0n8qgo82su1rebauubtbhhrti.apps.googleusercontent.com"
+           data-client_id="30571388466-bs9rkruekko82lvqc5a7jncmjnv7hjap.apps.googleusercontent.com"
            data-callback="handleCredentialResponse">
       </div>
 
@@ -95,9 +95,7 @@
       const mobileInput = document.getElementById('mobile').value.trim();
       const passwordInput = document.getElementById('password').value.trim();
 
-      // নিবন্ধিত ইউজারদের ডাটাবেজ/লোকালস্টোরেজ থেকে চেক করা
       const registeredUsers = JSON.parse(localStorage.getItem('usersList')) || [];
-      
       const validUser = registeredUsers.find(u => u.mobile === mobileInput && u.password === passwordInput);
 
       if (validUser) {
@@ -133,7 +131,6 @@
         mobile: "Google Auth User"
       };
 
-      // ইউজারের তথ্য সেভ করা এবং ড্যাশবোর্ডে রিডাইরেক্ট
       localStorage.setItem('user', JSON.stringify(googleUser));
       window.location.href = "index.html";
     }
