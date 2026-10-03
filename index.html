@@ -3,25 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Developer & User Dashboard</title>
+  <title>Dashboard - Web App</title>
+  
+  <!-- ১. লগইন না থাকলে সরাসরি login.html এ পাঠিয়ে দেওয়ার সিকিউরিটি চেক -->
+  <script>
+    if (!localStorage.getItem('user')) {
+      window.location.href = "login.html";
+    }
+  </script>
+
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     body { background-color: #f0f2f5; color: #333; display: flex; flex-direction: column; min-height: 100vh; }
 
     header { background-color: #1a73e8; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    header h1 { font-size: 22px; }
+    header h1 { font-size: 20px; }
 
     .nav-links { display: flex; align-items: center; gap: 15px; }
-    .nav-links a, .logout-btn { color: white; text-decoration: none; font-weight: 500; background: rgba(255, 255, 255, 0.2); padding: 8px 15px; border-radius: 5px; transition: background 0.3s; border: none; cursor: pointer; }
+    .nav-links a, .logout-btn { color: white; text-decoration: none; font-weight: 500; background: rgba(255, 255, 255, 0.2); padding: 8px 15px; border-radius: 5px; transition: background 0.3s; border: none; cursor: pointer; font-size: 14px; }
     .nav-links a:hover, .logout-btn:hover { background: rgba(255, 255, 255, 0.3); }
 
-    .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; flex: 1; }
+    .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; flex: 1; width: 100%; }
     
-    /* User Profile Banner */
-    .user-profile-banner { background: white; border-radius: 12px; padding: 20px; margin-bottom: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between; border-left: 6px solid #1a73e8; }
-    .user-info-text h3 { margin-bottom: 5px; color: #1a73e8; }
-    .user-info-text p { color: #666; font-size: 14px; margin: 2px 0; }
-    .btn-profile { background-color: #1a73e8; color: white; padding: 10px 18px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 14px; }
+    /* User Profile Card / Banner */
+    .user-profile-banner { background: white; border-radius: 12px; padding: 20px 25px; margin-bottom: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between; border-left: 6px solid #1a73e8; gap: 20px; flex-wrap: wrap; }
+    
+    .user-details { display: flex; align-items: center; gap: 18px; }
+    .profile-img { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; border: 2px solid #1a73e8; }
+    .avatar-placeholder { width: 65px; height: 65px; border-radius: 50%; background-color: #1a73e8; color: white; display: flex; justify-content: center; align-items: center; font-size: 28px; font-weight: bold; }
+    
+    .user-info-text h3 { margin-bottom: 6px; color: #1a73e8; font-size: 20px; }
+    .user-info-text p { color: #555; font-size: 14px; margin: 3px 0; }
+    
+    .btn-profile { background-color: #1a73e8; color: white; padding: 10px 18px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 14px; transition: background 0.2s; }
+    .btn-profile:hover { background-color: #1557b0; }
 
     .section-title { font-size: 22px; margin-bottom: 20px; color: #2c3e50; }
 
@@ -29,34 +44,40 @@
     .card { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #e1e8ed; }
     .card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
     .card-icon { font-size: 40px; margin-bottom: 15px; }
-    .card h3 { font-size: 20px; margin-bottom: 10px; color: #1a73e8; }
+    .card h3 { font-size: 18px; margin-bottom: 10px; color: #1a73e8; }
     .card p { font-size: 14px; color: #666; line-height: 1.5; margin-bottom: 20px; }
 
     .btn-open { display: inline-block; text-align: center; background-color: #1a73e8; color: white; text-decoration: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; font-size: 14px; }
     .btn-open:hover { background-color: #1557b0; }
 
-    footer { text-align: center; padding: 20px; background-color: #fff; border-top: 1px solid #e0e0e0; color: #777; font-size: 14px; }
+    footer { text-align: center; padding: 20px; background-color: #fff; border-top: 1px solid #e0e0e0; color: #777; font-size: 14px; margin-top: auto; }
   </style>
 </head>
 <body>
 
-  <!-- Navbar -->
+  <!-- Header / Navbar -->
   <header>
     <h1>Web App Dashboard</h1>
-    <div class="nav-links" id="navArea">
-      <!-- Navbar links injected via JS -->
+    <div class="nav-links">
+      <a href="profile.html">Profile</a>
+      <button class="logout-btn" onclick="logout()">Logout</button>
     </div>
   </header>
 
   <!-- Main Content Area -->
   <div class="container">
     
-    <!-- User Profile Details Section -->
-    <div class="user-profile-banner" id="profileBanner">
-      <div class="user-info-text">
-        <h3 id="dashName">Welcome User</h3>
-        <p>📱 <strong>Mobile:</strong> <span id="dashMobile">-</span></p>
-        <p>✉️ <strong>Email:</strong> <span id="dashEmail">-</span></p>
+    <!-- User Profile Details Banner -->
+    <div class="user-profile-banner">
+      <div class="user-details">
+        <div id="avatarContainer">
+          <!-- JS দিয়ে ছবি বা আদ্যক্ষর লোড হবে -->
+        </div>
+        <div class="user-info-text">
+          <h3 id="dashName">Welcome User</h3>
+          <p>✉️ <strong>Email:</strong> <span id="dashEmail">-</span></p>
+          <p>📱 <strong>Mobile / Auth ID:</strong> <span id="dashMobile">-</span></p>
+        </div>
       </div>
       <a href="profile.html" class="btn-profile">View Full Profile</a>
     </div>
@@ -68,7 +89,7 @@
         <div>
           <div class="card-icon">📊</div>
           <h3>Data Table</h3>
-          <p>মোবাইল নম্বর আইডি ব্যবহার করে ইউজারদের তথ্য এডিট, আপডেট ও ডিলিট করার টেবিল ভিউ।</p>
+          <p>মোবাইল নম্বর বা গুগল আইডি ব্যবহার করে ইউজারদের তথ্য এডিট, আপডেট ও ম্যানেজ করার টেবিল ভিউ।</p>
         </div>
         <a href="table.html" class="btn-open">Open Table</a>
       </div>
@@ -77,7 +98,7 @@
         <div>
           <div class="card-icon">🗄️</div>
           <h3>SQL Query Runner</h3>
-          <p>ডাটাবেজের বিভিন্ন SQL কোড ও কুয়েরি রান এবং ম্যানেজ করার টুলস।</p>
+          <p>ডাটাবেজের বিভিন্ন SQL কোড ও কুয়েরি রান এবং ফিল্টার করার টুলস।</p>
         </div>
         <a href="sql.html" class="btn-open">Open SQL App</a>
       </div>
@@ -103,32 +124,32 @@
   </div>
 
   <footer>
-    &copy; 2026 Apps Dashboard. All Rights Reserved.
+    &copy; 2026 Web App Dashboard. All Rights Reserved.
   </footer>
 
   <script>
-    // LocalStorage থেকে ইউজারের ডাটা লোড করা
+    // LocalStorage থেকে ইউজারের গুগল/ম্যানুয়াল ডাটা বের করে স্ক্রিনে দেখানো
     const userData = localStorage.getItem('user');
-    const navArea = document.getElementById('navArea');
 
     if (userData) {
       const user = JSON.parse(userData);
-      
-      // ড্যাশবোর্ড ব্যানের ডাটা সেট
-      document.getElementById('dashName').innerText = "Welcome, " + user.name;
-      document.getElementById('dashMobile').innerText = user.mobile;
-      document.getElementById('dashEmail').innerText = user.email;
 
-      // নেভিগেশন বার আপডেট
-      navArea.innerHTML = `
-        <a href="profile.html">Profile</a>
-        <button class="logout-btn" onclick="logout()">Logout</button>
-      `;
-    } else {
-      // লগইন না থাকলে লগইন পেজে পাঠাবে
-      window.location.href = "login.html";
+      // তথ্য সেট করা
+      document.getElementById('dashName').innerText = "Welcome, " + (user.name || "User");
+      document.getElementById('dashEmail').innerText = user.email || "N/A";
+      document.getElementById('dashMobile').innerText = user.mobile || "Google Auth User";
+
+      // প্রোফাইল ছবি হ্যান্ডেল করা (গুগল সাইন-ইন থেকে ছবি আসলে তা দেখাবে, না থাকলে নামের প্রথম অক্ষর)
+      const avatarContainer = document.getElementById('avatarContainer');
+      if (user.picture) {
+        avatarContainer.innerHTML = `<img src="${user.picture}" alt="Profile Picture" class="profile-img">`;
+      } else {
+        const initial = user.name ? user.name.charAt(0).toUpperCase() : 'U';
+        avatarContainer.innerHTML = `<div class="avatar-placeholder">${initial}</div>`;
+      }
     }
 
+    // লগআউট ফাংশন
     function logout() {
       localStorage.removeItem('user');
       window.location.href = "login.html";
